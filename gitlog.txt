@@ -1,3 +1,11 @@
+0.4.7-20200422
+- fix in cnfgenerator/gen_line and gnerate: each klause generated is now
+  a set of values, no more list of values. For when testing if a list is in
+  the group, it compare to the existing lists, and list comparison can result
+  [1,2,3] != [3,2,1], but they should be the same. I could sort before compare,
+  but now I use set in stead of list, then
+   set([1,2,3]) == set([3,2,1])
+  so this way no duplicates has a chance.
 0.4.6-20200422
 - github: created a new repo named solvertester, and
   on cmd line:

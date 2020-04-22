@@ -40,7 +40,7 @@ class Generator:
         self.nok = int(nok)
         self.datadir = 'data'
 
-    def gen_line(self):
+    def gen_newset(self):
 
         def get_r(nov):
             r = random.randint(1, 2 * nov)
@@ -59,9 +59,7 @@ class Generator:
                 abs_rr = abs(rr)
             lst.append(rr)
             abslst.append(abs_rr)
-
-        lst.append(0)
-        return lst
+        return set(lst)
 
     def generate(self, fname):
         fil = open(f'{self.datadir}/{fname}', 'wt')  # wt: rite-text mode
@@ -76,18 +74,19 @@ class Generator:
 
         lines = []
         for i in range(self.nok):
-            line = self.gen_line()
-            while line in lines:  # the same clause cannot be in twice
-                line = self.gen_line()
-            lines.append(line)
+            newset = self.gen_newset()
+            while newset in lines:  # the same clause cannot be in twice
+                newset = self.gen_newset()
+            lines.append(newset)
         lines.append('%')
         lines.append('0')
 
-        for line in lines:
-            if type(line) == type(''):  # end of file lines: %\n and 0\n
-                fil.write(str(line) + '\n')
+        for pairset in lines:
+            if type(pairset) == type(''):  # end of file lines: %\n and 0\n
+                fil.write(str(pairset) + '\n')
             else:
-                l = [str(e) for e in line]
+                l = [str(e) for e in pairset]
+                l.append('0')
                 fil.write(' '.join(l) + '\n')
         fil.close()
 
