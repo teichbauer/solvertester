@@ -1,0 +1,98 @@
+What is NP problem, NP-complete
+-------------------------------
+From Wikipedia:
+The P versus NP problem is a major unsolved problem in computer science. 
+It asks whether every problem whose solution can be quickly verified can 
+also be solved quickly.
+
+The informal term quickly, used above, means the existence of an algorithm 
+solving the task that runs in polynomial time, such that the time to complete 
+the task varies as a polynomial function on the size of the input to the 
+algorithm (as opposed to, say, exponential time). The general class of questions
+for which some algorithm can provide an answer in polynomial time is called 
+"class P" or just "P". For some questions, there is no known way to find an 
+answer quickly, but if one is provided with information showing what the answer 
+is, it is possible to verify the answer quickly. The class of questions for 
+which an answer can be verified in polynomial time is called NP, which stands 
+for "nondeterministic polynomial time".[Note 1]
+
+An answer to the P = NP question would determine whether problems that can be 
+verified in polynomial time can also be solved in polynomial time. If it turned
+out that P ≠ NP, which is widely believed, it would mean that there are problems
+in NP that are harder to compute than to verify: they could not be solved in 
+polynomial time, but the answer could be verified in polynomial time.
+
+Aside from being an important problem in computational theory, a proof either 
+way would have profound implications for mathematics, cryptography, algorithm 
+research, artificial intelligence, game theory, multimedia processing, 
+philosophy, economics and many other fields
+
+History
+----------------------------
+The underlying issues were first discussed in the 1950s, in letters from John 
+Forbes Nash Jr. to the National Security Agency, and from Kurt Gödel to John von
+Neumann. The precise statement of the P versus NP problem was introduced in 1971
+by Stephen Cook in his seminal paper "The complexity of theorem proving 
+procedures"[3] (and independently by Leonid Levin in 1973[4]) and is considered 
+by many to be the most important open problem in computer science.[5]
+
+Although the P versus NP problem was formally defined in 1971, there were 
+previous inklings of the problems involved, the difficulty of proof, and the 
+potential consequences. In 1955, mathematician John Nash wrote a letter to the 
+NSA, where he speculated that cracking a sufficiently complex code would require
+time exponential in the length of the key.[6] If proved (and Nash was suitably skeptical) this would imply what is now called P ≠ NP, since a proposed key can 
+easily be verified in polynomial time. Another mention of the underlying problem
+occurred in a 1956 letter written by Kurt Gödel to John von Neumann. Gödel asked
+whether theorem-proving (now known to be co-NP-complete) could be solved in 
+quadratic or linear time,[7] and pointed out one of the most important 
+consequences—that if so, then the discovery of mathematical proofs could be 
+automated.
+
+NP-completeness
+-----------------------------
+To attack the P = NP question, the concept of NP-completeness is very useful. 
+NP-complete problems are a set of problems to each of which any other NP-problem 
+can be reduced in polynomial time and whose solution may still be verified in 
+polynomial time. That is, any NP problem can be transformed into any of the 
+NP-complete problems. Informally, an NP-complete problem is an NP problem that 
+is at least as "tough" as any other problem in NP.
+
+NP-hard problems are those at least as hard as NP problems, i.e., all NP 
+problems can be reduced (in polynomial time) to them. NP-hard problems need not 
+be in NP, i.e., they need not have solutions verifiable in polynomial time.
+
+For instance, the Boolean satisfiability problem is NP-complete by the 
+Cook–Levin theorem, so any instance of any problem in NP can be transformed 
+mechanically into an instance of the Boolean satisfiability problem in 
+polynomial time. The Boolean satisfiability problem is one of many such 
+NP-complete problems. If any NP-complete problem is in P, then it would follow 
+that P = NP. However, many important problems have been shown to be NP-complete, 
+and no fast algorithm for any of them is known.
+
+Based on the definition alone it is not obvious that NP-complete problems exist; 
+however, a trivial and contrived NP-complete problem can be formulated as 
+follows: given a description of a Turing machine M guaranteed to halt in 
+polynomial time, does there exist a polynomial-size input that M will accept?
+It is in NP because (given an input) it is simple to check whether M accepts the 
+input by simulating M; it is NP-complete because the verifier for any particular 
+instance of a problem in NP can be encoded as a polynomial-time machine M that 
+takes the solution to be verified as input. Then the question of whether the 
+instance is a yes or no instance is determined by whether a valid input exists.
+
+The first natural problem proven to be NP-complete was the Boolean 
+satisfiability problem, also known as SAT. As noted above, this is the 
+Cook–Levin theorem; its proof that satisfiability is NP-complete contains 
+technical details about Turing machines as they relate to the definition of NP. 
+However, after this problem was proved to be NP-complete, proof by reduction 
+provided a simpler way to show that many other problems are also NP-complete, 
+including the game Sudoku discussed earlier. In this case, the proof shows 
+that a solution of Sudoku in polynomial time could also be used to complete 
+Latin squares in polynomial time.[13] This in turn gives a solution to the 
+problem of partitioning tri-partite graphs into triangles,[14] which could then
+be used to find solutions for the special case of SAT known as 3-SAT,[15] which 
+then provides a solution for general Boolean satisfiability. So a polynomial 
+time solution to Sudoku leads, by a series of mechanical transformations, to a 
+polynomial time solution of satisfiability, which in turn can be used to solve 
+any other NP-problem in polynomial time. Using transformations like this, a vast 
+class of seemingly unrelated problems are all reducible to one another, and are 
+in a sense "the same problem".
