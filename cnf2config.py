@@ -66,4 +66,5 @@ if __name__ == '__main__':
     fname = sys.argv[1]
     nv, nk, clines = readfile(fname)
     sdic = make_sdic(nv, clines)
-    print2file(sdic, './configs/config.json')
+    fname = f'./configs/config{nv}_{nk}.json'
+    print2file(sdic, fname)

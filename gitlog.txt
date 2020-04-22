@@ -1,3 +1,9 @@
+0.4.8-20200422
+- naming: 
+    python cnfgenerator.py 8 38 -> data/cnf8-38.cnf -> 8 variable,38 clauses
+    python cnf2config.py cnf8-38.cnf -> configs/config8_38.json
+    python solver0.py config8_38.json-> verify/config8_38.txt
+- solver0.py: also print out sats, on cmd and in file as head-line
 0.4.7-20200422
 - fix in cnfgenerator/gen_line and gnerate: each klause generated is now
   a set of values, no more list of values. For when testing if a list is in
