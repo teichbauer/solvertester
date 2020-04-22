@@ -38,7 +38,7 @@ class Generator:
     def __init__(self, nov, nok):
         self.nov = int(nov)
         self.nok = int(nok)
-        self.datadir = 'mydata'
+        self.datadir = 'data'
 
     def gen_line(self):
 
@@ -64,7 +64,7 @@ class Generator:
         return lst
 
     def generate(self, fname):
-        fil = open(f'{self.datadir}/{fname}.cnf', 'wt')  # wt: rite-text mode
+        fil = open(f'{self.datadir}/{fname}', 'wt')  # wt: rite-text mode
         ts = datetime.now().isoformat()
         fil.write('c\n')
         fil.write(f'c {ts}\n')
