@@ -1,3 +1,7 @@
+0.4.6-20200422
+- github: created a new repo named solvertester, and
+  on cmd line:
+  git remote add origin https://github.com/teichbauer/solvertester.git
 0.4.5-20200422
 - solver0 for finding sats brutal-force way, and save the result
   as verify/config.txt
