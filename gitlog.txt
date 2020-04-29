@@ -1,3 +1,16 @@
+0.4.11-20200428
+  PS D:\lab\solvertester> python .\cnfgenerator.py 12 60
+  PS D:\lab\solvertester> python .\cnf2config.py cnf12-60.cnf
+  PS D:\lab\solvertester> python .\verifyconfig.py config12_60.json
+  config12_60.json is ok
+  PS D:\lab\solvertester> python .\verifyconfig.py config20_80.json
+  config20_80.json is ok
+  PS D:\lab\solvertester> .\solver0.py config12_60.json
+  sat founr: {3335: 'SAT'}
+  time used: 0.17184162139892578
+  PS D:\lab\solvertester> .\solver0.py config20_80.json
+  sat founr: {55191: 'SAT'}
+  time used: 3.547246217727661
 0.4.10-20200425
 - verifyconfig will verify a config file
 - verifysatvalue will verify a sat value is satisfying a config file.
