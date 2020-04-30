@@ -80,6 +80,7 @@ class Generator:
             lines.append(newset)
         lines.append('%')
         lines.append('0')
+        print(f'{fname} generated.')
 
         for pairset in lines:
             if type(pairset) == type(''):  # end of file lines: %\n and 0\n

@@ -4,14 +4,28 @@ import time
 
 _time_count = 0.0
 
+
 class Solver0:
-    def __init__(self, sdic,stop=False):
+    def __init__(self, sdic, stop=False):
         self.nov = sdic['nov']
         self.N = 2 ** self.nov
+        self.stop = stop   # stops when first sat hit
         kdic = sdic['kdic']
         self.klauses = {kn: Klause(kn, kl) for kn, kl in kdic.items()}
+        self.kns = list(self.klauses.keys())
         self.sats = []
-        self.hit_dic = self.gen_coverage(stop)
+
+    def solve(self):
+        sats = []
+        for v in range(self.N):
+            hit = False
+            for kn in self.kns:
+                hit = self.klauses[kn].hit(v)
+                if hit:
+                    break
+            if not hit:
+                sats.append(v)
+        return sats
 
     def gen_coverage(self, stop=False):
         dic = {}
@@ -25,7 +39,7 @@ class Solver0:
             if len(clst) == 0:
                 self.sats.append(v)
                 if stop:
-                    return { v: 'SAT' }
+                    return {v: 'SAT'}
         return dic
 
     def gen_bin(self, v):
@@ -33,7 +47,8 @@ class Solver0:
         lst = [e for e in m]
         return '  '.join(lst)
 
-    def calc(self, fname):
+    def output2file(self, fname):
+        self.hit_dic = self.gen_coverage(self.stop)
         fil = open('./verify/' + fname, 'w')
         msg = f'sats: {self.sats}'
         fil.write(msg + '\n')
@@ -61,12 +76,13 @@ if __name__ == '__main__':
         config_file_name = sys.argv[1]
     da = open(f'configs/'+config_file_name).read()
     sdic = eval(da)
-    solver0 = Solver0(sdic, not printout)
+    solver0 = Solver0(sdic, printout)
     if printout:
         outfile_name = config_file_name.split('.')[0] + '.txt'
-        solver0.calc(outfile_name)
+        solver0.output2file(outfile_name)
     else:
-        sat_dic = solver0.hit_dic
-        print(f'sat founr: {sat_dic}')
+        sats = solver0.solve()
+        length = len(sats)
+        print(f'{length} sats found: {sats}')
         time_used = time.time() - _time_count
         print(f'time used: {time_used}')

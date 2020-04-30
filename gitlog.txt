@@ -1,3 +1,14 @@
+0.4.12-20200430
+- restructured files and some fixes
+      python gen_config.py <nov> <nok>
+  will generate data/cnf<nov>-<nok>.cnf file, and also generate
+  configs/config<nov>_<nok>.json and have it verified. Say, by running
+      python gen_config.py 22 91
+  I have ./data/cnf22-91.cnf, and./configs/config22_91.json, now by running
+      python solver0.py config22_91.json
+  I then got output:
+    4 sats found: [3872333, 3905101, 4134477, 4167245]
+    time used: 20.752955436706543
 0.4.11-20200428
   PS D:\lab\solvertester> python .\cnfgenerator.py 12 60
   PS D:\lab\solvertester> python .\cnf2config.py cnf12-60.cnf

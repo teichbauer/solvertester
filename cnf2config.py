@@ -12,9 +12,8 @@
 #    }
 # }
 # ============================================================================
-
-
 import sys
+from verifyconfig import verify
 
 
 def readfile(file_name):
@@ -62,9 +61,24 @@ def make_sdic(nov, cls):
     return sdic
 
 
+def verify_and_make_config(sdic):
+    nov = sdic['nov']
+    nok = len(sdic['kdic'])
+    ok, kn, kn0 = verify(sdic['kdic'], sdic['nov'])
+    if ok:
+        fname = f'./configs/config{nov}_{nok}.json'
+        print2file(sdic, fname)
+        print(f'{fname}  has been generated.')
+    else:
+        if kn0 == None:
+            nov = sdic['nov']
+            print(f'bit number higher than {nov}')
+        else:
+            print(f'{kn} and {kn0} are duplicates')
+
+
 if __name__ == '__main__':
     fname = sys.argv[1]
     nv, nk, clines = readfile(fname)
     sdic = make_sdic(nv, clines)
-    fname = f'./configs/config{nv}_{nk}.json'
-    print2file(sdic, fname)
+    verify_and_make_config(sdic)
