@@ -1,3 +1,5 @@
 verify/*
 
+data/*
+
 __pycache__/*
