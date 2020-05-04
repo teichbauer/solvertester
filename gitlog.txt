@@ -1,3 +1,5 @@
+0.4.14-20200504
+- ported solver4.py, visualizer.py, bitdic.py, basics.py, vklause from p3sat3
 0.4.13-20200430
 - issue-1:
   cnf2config.py generated config file name, loses the original uf100-430-01

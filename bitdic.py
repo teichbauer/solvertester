@@ -1,4 +1,4 @@
-from basics import get_sdic, get_sats
+from basics import get_sdic, get_sats, make_vkdic
 from vklause import VKlause
 from visualizer import Visualizer
 from TransKlauseEngine import TransKlauseEngine
@@ -43,8 +43,27 @@ class BitDic:
         self.add_clause()
         self.conversion = None
         self.vis = Visualizer(self.vkdic, self.nov)
+    # ==== end of def __init__(..)
 
-    def split_topbit(self, debug=False):
+    def subset(self, highbit, lowbit=0):
+        vkd = {}
+        bits = list(self.dic.keys())
+        drops = []
+        for b in bits:
+            if b > highbit:
+                drops.append(b)
+
+        b = lowbit
+        while b <= highbit:
+            zeros, ones = self.dic[b]  # lists of vks
+            for kn in zeros + ones:    # zeros and ones have diff kns in them
+                if kn not in vkd:
+                    vk = self.vkdic[kn].clone(drops)
+                    vkd[kn] = vk
+            b += 1
+        return BitDic("subset", self.name + "-child", vkd, highbit + 1)
+
+    def split_topbit(self, single, debug):
         ''' if self.nov = 8, top bit is bit-7.
             now bit-7 will be dropped, and self be split into
             2 bitdic:
@@ -86,12 +105,18 @@ class BitDic:
 
         N1 = 2 ** tb
         if len(vkdic0) == 0:
-            vs = [v for v in range(N1)]
+            if single:
+                vs = [0]
+            else:
+                vs = [v for v in range(N1)]
             perf_count['SATS'] = get_sats(self, vs)
             return len(perf_count['SATS']), None
 
         if len(vkdic1) == 0:
-            vs = [N1 + v for v in range(N1)]
+            if single:
+                vs = [N1]
+            else:
+                vs = [N1 + v for v in range(N1)]
             perf_count['SATS'] = get_sats(self, vs)
             return len(perf_count['SATS']), None
 
@@ -148,6 +173,7 @@ class BitDic:
             else:
                 bitdic1 = bitdic_tmp
             return bitdic0, bitdic1
+    # ==== end of def split_topbit(self, single, debug)
 
     def check_finish(self):
         rd = sorted(list(self.ordered_vkdic.keys()))
@@ -172,6 +198,7 @@ class BitDic:
 
             elif 2 in self.ordered_vkdic:
                 pass
+    # ====== end of def check_finish(self)
 
     def test4_finish(self):
         ''' criterion or criteria for being finished(dnoe, or sat):
@@ -192,6 +219,7 @@ class BitDic:
             if len(self.dic[0][1]) == 0:
                 sats = get_sats(self, [1])
         return sats
+    # ==== end of def test4_finish(self)
 
     def most_popular(self, d):
         ''' Among every bit of d[bit] = [[0-kns],[10kns]]
@@ -209,6 +237,7 @@ class BitDic:
         best_bit = bit_powers[ps[0]]
         kns = d[best_bit][0] + d[best_bit][1]
         return set(kns), best_bit
+    # ==== end of def most_popular(self, d)
 
     def set_txseed(self, vkdic=None, bdic=None):
         ''' pick/return a kn as seed, in vkdic with shortest dic, and
@@ -241,6 +270,7 @@ class BitDic:
             if kn in popular_kns:
                 return kn, top_bit
         return lst[0], top_bit
+    # ==== end of def set_txseed(self, vkdic=None, bdic=None)
 
     def TxTopKn(self, tx_seed, top_bit):
         perf_count["TxTopKn"] += 1
@@ -258,6 +288,7 @@ class BitDic:
         bitdic.conversion = tx
         bitdic.parent = self
         return bitdic
+    # ==== end of def TxTopKn(self, tx_seed, top_bit)
 
     def add_clause(self, vk=None):
         perf_count["add_clause"] += 1
@@ -290,10 +321,33 @@ class BitDic:
             for vkn in self.vkdic:
                 add_vk(self, vkn)
             return self
+    # ==== end of def add_clause(self, vk=None)
 
     def visualize(self):
         self.vis.output(self)
 
+    def output_config(self, fname):
+        self.vis.output_config_file(self.vkdic, self.nov,  fname)
+
 
 if __name__ == '__main__':
+    ''' python bitdic.py <input-config-name> <high-bit> <output-config-filename>
+        this will cut at high-bit, and output lower part -> (subset)config
+        '''
+    import sys
+    if len(sys.argv) == 4:
+        infile_name = sys.argv[1]
+        hbit = int(sys.argv[2])
+        outfile_name = sys.argv[3]
+    else:
+        infile_name = 'config1.json'
+        hbit = 4
+        outfile_name = 'config1-4.json'
+
+    sdic = get_sdic(f'./configs/{infile_name}')
+    vkdic = make_vkdic(sdic['kdic'], sdic['nov'])
+    bitdic0 = BitDic('test', 'test-name', vkdic, sdic['nov'])
+    bitdic1 = bitdic0.subset(hbit)
+    bitdic1.output_config(outfile_name)
+
     x = 1

@@ -1,3 +1,5 @@
+from vklause import VKlause
+
 
 def klause_value(klause):
     # regardless v be 0 or 1, set the bit 1
@@ -67,6 +69,13 @@ def get_sdic(filename):
     sdic = eval(open(filename).read())
     return sdic
 
+
+def make_vkdic(kdic, nov):
+    vkdic = {}
+    for kn, klause in kdic.items():
+        vkdic[kn] = VKlause(kn, klause, nov)
+    return vkdic
+
 # ============================================
 
 
@@ -111,6 +120,8 @@ def trade_lst_elements(lst, pos_tuple):
 
 
 def get_sats(start_node, vs):
+    nos = len(vs)
+    print(f'{nos} sat(s) found!!!')
     node = start_node
     nvs = vs[:]
     # with vkdic empty, there is only 1 line of value, the search of v

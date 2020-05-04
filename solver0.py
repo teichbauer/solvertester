@@ -66,6 +66,7 @@ class Solver0:
 
 if __name__ == '__main__':
     _time_count = time.time()
+    print(f'starting time: {_time_count}')
     printout = False
     if len(sys.argv) == 3:
         printout = True
@@ -84,5 +85,7 @@ if __name__ == '__main__':
         sats = solver0.solve()
         length = len(sats)
         print(f'{length} sats found: {sats}')
-        time_used = time.time() - _time_count
+        time_now = time.time()
+        print(f'time now:{time_now}')
+        time_used = time_now - _time_count
         print(f'time used: {time_used}')

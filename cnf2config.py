@@ -61,12 +61,12 @@ def make_sdic(nov, cls):
     return sdic
 
 
-def verify_and_make_config(sdic):
+def verify_and_make_config(sdic, fnamebase):
     nov = sdic['nov']
     nok = len(sdic['kdic'])
     ok, kn, kn0 = verify(sdic['kdic'], sdic['nov'])
     if ok:
-        fname = f'./configs/config{nov}_{nok}.json'
+        fname = f'./configs/{fnamebase}.json'
         print2file(sdic, fname)
         print(f'{fname}  has been generated.')
     else:
@@ -81,4 +81,5 @@ if __name__ == '__main__':
     fname = sys.argv[1]
     nv, nk, clines = readfile(fname)
     sdic = make_sdic(nv, clines)
-    verify_and_make_config(sdic)
+    fnamebase = fname.split('.')[0]
+    verify_and_make_config(sdic, fnamebase)
