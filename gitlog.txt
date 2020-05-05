@@ -1,3 +1,6 @@
+0.4.16-20200505
+- bitdic.subset now can cut 7-4, 3-0 bit from config1.json
+- visualizer can print out better formatted cut json files
 0.4.15-20200504
 - re-structured files
 - gen_config.py now take:
