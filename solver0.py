@@ -43,20 +43,25 @@ class Solver0:
         return dic
 
     def gen_bin(self, v):
-        m = bin(v)[2:].zfill(8)
+        m = bin(v)[2:].zfill(self.nov)
         lst = [e for e in m]
         return '  '.join(lst)
 
     def output2file(self, fname):
-        self.hit_dic = self.gen_coverage(self.stop)
+        self.hit_dic = self.gen_coverage()
+        # self.hit_dic = self.gen_coverage(self.stop)
         fil = open('./verify/' + fname, 'w')
         msg = f'sats: {self.sats}'
         fil.write(msg + '\n')
         print(msg)
-        header = '------ 7  6  5  4  3  2  1  0 -------\n'
+        header = '-----'
+        for i in range(self.nov):
+            header += '  ' + str(self.nov - i - 1)
+        header += '  -----\n'
+        # header = '------ 7  6  5  4  3  2  1  0 -------\n'
         fil.write(header)
         for v in range(self.N):
-            vkey = str(v).zfill(5)
+            vkey = str(v).zfill(5)     # 5-char string for decimal value mark
             vbin = self.gen_bin(v)
             cover = ' '.join(self.hit_dic[v])
             line = f'{vkey}: {vbin} $ {cover}'
@@ -67,12 +72,13 @@ class Solver0:
 if __name__ == '__main__':
     _time_count = time.time()
     print(f'starting time: {_time_count}')
-    printout = False
-    if len(sys.argv) == 3:
-        printout = True
+
+    printout = len(sys.argv) == 3
+    # printout = True
     if len(sys.argv) < 2:
         print(f'python solver0.py <conf-file-name>')
-        config_file_name = 'config8_38.json'
+        # config_file_name = 'config8_38.json'
+        config_file_name = 'config1-7.json'
     else:
         config_file_name = sys.argv[1]
     da = open(f'configs/'+config_file_name).read()

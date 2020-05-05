@@ -66,7 +66,7 @@ def verify_and_make_config(sdic, fnamebase):
     nok = len(sdic['kdic'])
     ok, kn, kn0 = verify(sdic['kdic'], sdic['nov'])
     if ok:
-        fname = f'./configs/{fnamebase}.json'
+        fname = f'./configs/{fnamebase}'
         print2file(sdic, fname)
         print(f'{fname}  has been generated.')
     else:

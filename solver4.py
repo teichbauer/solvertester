@@ -1,6 +1,6 @@
 from vklause import VKlause
-from bitdic import BitDic, perf_count
-from basics import get_sdic, make_vkdic
+from bitdic import BitDic
+from basics import get_sdic, make_vkdic, perf_count
 import pprint
 import sys
 import time
@@ -66,8 +66,8 @@ if __name__ == '__main__':
     pp = pprint.PrettyPrinter(indent=4)
     msg = len(sys.argv) == 3
     debug = len(sys.argv) == 4
-    # single = True
-    single = False
+    single = True
+    # single = False
     if len(sys.argv) == 1:
         config_file_name = 'config20_80.json'
         # config_file_name = 'config1.json'

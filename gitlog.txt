@@ -1,3 +1,9 @@
+0.4.15-20200504
+- re-structured files
+- gen_config.py now take:
+    python gen_config.py <nov> <nok> <cnf-file-name>
+- solver0 now can accept more nov, also with klause of size < 3
+  true also for output.
 0.4.14-20200504
 - ported solver4.py, visualizer.py, bitdic.py, basics.py, vklause from p3sat3
 0.4.13-20200430

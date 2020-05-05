@@ -1,19 +1,7 @@
-from basics import get_sdic, get_sats, make_vkdic
+from basics import *
 from vklause import VKlause
 from visualizer import Visualizer
 from TransKlauseEngine import TransKlauseEngine
-
-
-perf_count = {
-    "SATS": [],
-    "BitDic-init": 0,
-    "TxTopKn": 0,
-    "add_clause": 0,
-    "set_txseed": 0,
-    "test4_finish": 0,
-    "time-used":    0.0,
-    "split_topbit": 0
-}
 
 
 class BitDic:
@@ -314,7 +302,6 @@ class BitDic:
                         # put vkn in 0-list, or 1-list
                         lst[v].append(vkn)
                 return vclause
-
         if vk:
             return add_vk(self, vk)
         else:
