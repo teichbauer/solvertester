@@ -1,5 +1,6 @@
 import sys
 from klause import Klause
+from basics import make_vkdic
 import time
 
 _time_count = 0.0
@@ -11,8 +12,9 @@ class Solver0:
         self.N = 2 ** self.nov
         self.stop = stop   # stops when first sat hit
         kdic = sdic['kdic']
-        self.klauses = {kn: Klause(kn, kl) for kn, kl in kdic.items()}
-        self.kns = list(self.klauses.keys())
+        # self.klauses = {kn: Klause(kn, kl) for kn, kl in kdic.items()}
+        self.vkdic = make_vkdic(kdic, self.nov)
+        self.kns = list(self.vkdic.keys())
         self.sats = []
 
     def solve(self):
@@ -20,7 +22,8 @@ class Solver0:
         for v in range(self.N):
             hit = False
             for kn in self.kns:
-                hit = self.klauses[kn].hit(v)
+                hit = self.vkdic[kn].hit(v)
+                # hit = self.klauses[kn].hit(v)
                 if hit:
                     break
             if not hit:
