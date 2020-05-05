@@ -43,7 +43,7 @@ class BitDic:
         for b in bits:
             if b > highbit or b < lowbit:
                 drops.append(b)
-
+        nov = highbit - lowbit + 1
         b = lowbit
         while b <= highbit:
             zeros, ones = self.dic[b]  # lists of vks
@@ -52,7 +52,16 @@ class BitDic:
                     vk = self.vkdic[kn].clone(drops)
                     vkd[kn] = vk
             b += 1
-        return BitDic("subset", self.name + "-child", vkd, highbit - lowbit + 1)
+        bitdic = BitDic("subset", self.name + "-child", vkd, nov)
+        if lowbit != 0:
+            trans = {}
+            for i in range(lowbit):
+                trans[i + nov] = i
+            nvkd = {}
+            for kn in vkd:
+                nvkd[kn] = vkd[kn].shift_bits(trans)
+            bitdic = BitDic("shift", self.name + "upper", nvkd, nov)
+        return bitdic
 
     def split_topbit(self, single, debug):
         ''' if self.nov = 8, top bit is bit-7.
@@ -327,7 +336,7 @@ if __name__ == '__main__':
         sitting on bit [7,6,5,4] and [3,2,1,0]
         '''
     import sys
-    if len(sys.argv) == 4:
+    if len(sys.argv) == 3:
         infile_name = sys.argv[1]
         hbit = int(sys.argv[2])
         namebase = infile_name.split('.')[0]

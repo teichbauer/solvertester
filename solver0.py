@@ -34,8 +34,8 @@ class Solver0:
         dic = {}
         for v in range(self.N):
             clst = []
-            for kn, kl in self.klauses.items():
-                if kl.hit(v):
+            for kn, vk in self.vkdic.items():
+                if vk.hit(v):
                     clst.append(kn)
                 clst.sort()
             dic[v] = clst

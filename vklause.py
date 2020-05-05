@@ -22,6 +22,15 @@ class VKlause:
                     dic.pop(b, None)
         return VKlause(self.kname, dic, self.nov)
 
+    def shift_bits(self, trans):
+        dic = {}
+        for b, v in self.dic.items():
+            if b in trans:
+                dic[trans[b]] = v
+            else:
+                dic[b] = v
+        return VKlause(self.kname, dic, self.nov)
+
     def set_filter_and_mask(self):
         ''' For the example klause {7:1, 5:0, 2:1}
                               BITS:   7  6  5  4  3  2  1  0
