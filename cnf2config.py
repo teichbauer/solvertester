@@ -14,7 +14,7 @@
 # ============================================================================
 import sys
 from verifyconfig import verify
-
+from visualizer import Visualizer
 
 def readfile(file_name):
     fil = open('data/' + file_name)
