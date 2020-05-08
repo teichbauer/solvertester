@@ -1,3 +1,5 @@
+0.4.20-20200508
+- port p3sat3 see its gitlog.txt
 0.4.19-20200507
 - trials with cfg6-13.json
 0.4.18-20200507

@@ -21,6 +21,8 @@ class BitDic:
         self.seed_name = seed_name
         self.name = bdname
         self.nov = nov
+        if nov == 3:
+            self.check8set = set([0, 1, 2, 3, 4, 5, 6, 7])
         self.dic = {}   # keyed by bits, value: [[0-kns],[1-kns]]
         self.vkdic = vkdic
         self.parent = None  # the parent that generated / tx-to self
@@ -43,7 +45,7 @@ class BitDic:
         for b in bits:
             if b > highbit or b < lowbit:
                 drops.append(b)
-        nov = highbit - lowbit + 1
+
         b = lowbit
         while b <= highbit:
             zeros, ones = self.dic[b]  # lists of vks
@@ -52,16 +54,7 @@ class BitDic:
                     vk = self.vkdic[kn].clone(drops)
                     vkd[kn] = vk
             b += 1
-        bitdic = BitDic("subset", self.name + "-child", vkd, nov)
-        if lowbit != 0:
-            trans = {}
-            for i in range(lowbit):
-                trans[i + nov] = i
-            nvkd = {}
-            for kn in vkd:
-                nvkd[kn] = vkd[kn].shift_bits(trans)
-            bitdic = BitDic("shift", self.name + "upper", nvkd, nov)
-        return bitdic
+        return BitDic("subset", self.name + "-child", vkd, highbit + 1)
 
     def split_topbit(self, single, debug):
         ''' if self.nov = 8, top bit is bit-7.
@@ -132,7 +125,7 @@ class BitDic:
         bitdic0.parent = self
 
         sats = bitdic0.test4_finish()
-        if sats != None:
+        if sats != None and len(sats) > 0:
             perf_count['SATS'] = sats
             return len(sats), None
 
@@ -162,7 +155,7 @@ class BitDic:
                 bitdic_tmp.visualize()
 
             sats = bitdic_tmp.test4_finish()
-            if sats != None:
+            if sats != None and len(sats) > 0:
                 perf_count['SATS'] = sats
                 return len(sats), None
 
@@ -176,6 +169,8 @@ class BitDic:
     # ==== end of def split_topbit(self, single, debug)
 
     def check_finish(self):
+        if self.nov == 3:
+            return finish_nov3(self)
         rd = sorted(list(self.ordered_vkdic.keys()))
         if len(rd) > 1:
             kns = self.ordered_vkdic[rd[0]].copy()
@@ -198,6 +193,7 @@ class BitDic:
 
             elif 2 in self.ordered_vkdic:
                 pass
+        return []
     # ====== end of def check_finish(self)
 
     def test4_finish(self):
@@ -211,8 +207,9 @@ class BitDic:
             When sat found, return it. If not, self.done = False/True
             '''
         perf_count["test4_finish"] += 1
-        self.check_finish()
-        sats = None
+        sats = []
+        sats = get_sats(self, self.check_finish())
+        # sats = None
         if not self.done and self.nov == 1:
             if len(self.dic[0][0]) == 0:
                 sats = get_sats(self, [0])
@@ -282,6 +279,7 @@ class BitDic:
             True)                   # trans to the top-position (v == 0)
 
         new_vkdic = tx.trans_vkdic(self.vkdic)
+
         # turn "19'1" -> "19't"
         name = self.name.replace("'1", "'t")
         bitdic = BitDic(tx_seed, name, new_vkdic, self.nov)
@@ -355,6 +353,7 @@ if __name__ == '__main__':
     bitdic1 = bitdic.subset(topbit, tlowbit)
     fn0 = f'{namebase}-{hbit}-0.json'
     fn1 = f'{namebase}-{topbit}-{tlowbit}.json'
+    print(f'outputing: {fn0}  {fn1}')
     bitdic0.output_config(fn0)
     bitdic1.output_config(fn1)
 
