@@ -1,3 +1,6 @@
+0.4.21-20200510
+- modified verifysat.py, got rid of klause.py - now use vklause
+- thinking about bitgroup / solver5 - TBD, may be in p3sat3 repo...
 0.4.20-20200508
 - port p3sat3 see its gitlog.txt
 0.4.19-20200507
