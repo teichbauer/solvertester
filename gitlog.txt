@@ -1,3 +1,6 @@
+0.4.23-20200512
+- fix in bitdic
+- first success for solver5: cut & conquer, for cfg6-13.json.
 0.4.22-20200512
 - get_bit, set_bit moved (from TransKlauseEngine) to vklause, added set_bits.
 - VKlause now has .completion with possible values ('tt','p1','p2) meaning
