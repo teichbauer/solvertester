@@ -1,3 +1,11 @@
+0.4.22-20200512
+- get_bit, set_bit moved (from TransKlauseEngine) to vklause, added set_bits.
+- VKlause now has .completion with possible values ('tt','p1','p2) meaning
+  total, partial-1, partial-2
+- VKlause clone added lowbit(def:0), for tx of bit-name to be bit % lowbit
+- VKlause.hit_valuelist, s general case of .hit_values_nov3
+- ported changes from p3sat3.
+- bitgroup.py - TBD
 0.4.21-20200510
 - modified verifysat.py, got rid of klause.py - now use vklause
 - thinking about bitgroup / solver5 - TBD, may be in p3sat3 repo...

@@ -1,5 +1,5 @@
 import sys
-from klause import Klause
+# from klause import Klause
 from basics import make_vkdic
 import time
 
