@@ -1,3 +1,6 @@
+0.4.24-20200513
+- back porting p3sat3's 0.3.189: fix in TransKlauseEngine.py
+- minor change in solver5.py
 0.4.23-20200512
 - fix in bitdic
 - first success for solver5: cut & conquer, for cfg6-13.json.
