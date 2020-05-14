@@ -275,9 +275,12 @@ if __name__ == '__main__':
         hbit = int(sys.argv[2])
         namebase = infile_name.split('.')[0]
     else:
-        infile_name = 'config1.json'
-        hbit = 3
-        namebase = 'config1'
+        infile_name = 'config20_80.json'
+        hbit = 10
+        # infile_name = 'config1.json'
+        # hbit = 3
+
+    namebase = infile_name.split('.')[0]
 
     sdic = get_sdic(f'./configs/{infile_name}')
     topbit = sdic['nov'] - 1
