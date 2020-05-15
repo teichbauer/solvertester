@@ -56,54 +56,6 @@ class VKlause:
             dic = d
         return VKlause(self.kname, dic, new_nov)
 
-    def hit_values_nov3(self):
-        if self.nov == 3:
-            hvs = []
-            if self.nob == 0:          # vklause.dic = {}
-                return list(range(8))  # all 8 values are hit
-            elif self.nob == 3:
-                hvs.append(self.mask)
-            elif self.nob == 2:
-                # filter ca be: 3(011), 5(101), 6(110)
-                # the 0-bit can take 0 or 1 as value
-                # 2 hit-values are there
-                if self.filter == 3:
-                    hvs = [self.mask, 4 + self.mask]
-                elif self.filter == 5:
-                    hvs = [self.mask, 2 + self.mask]
-                elif self.filter == 6:
-                    hvs = [self.mask, 1 + self.mask]
-                else:
-                    raise('error in VKlause.hit_value_nov3 - 0')
-            elif self.nob == 1:
-                # filter can be: 1/001, 2/010, 4/100
-                # the 0-bit can take 0 or 1 as value
-                # 4 hit-values are there
-                if self.filter == 1:    # filter: 001, mask = 000 or 001
-                    hvs = [
-                        self.mask,      # self.mask = m
-                        self.mask + 2,  # 01m
-                        self.mask + 4,  # 10m
-                        self.mask + 6   # 11m
-                    ]
-                elif self.filter == 2:  # filter: 010, mask = 000 or 010
-                    hvs = [
-                        self.mask,      # self.mask = m: 0m0
-                        self.mask + 1,  # 0m1
-                        self.mask + 4,  # 1m0
-                        self.mask + 5   # 1m1
-                    ]
-                elif self.filter == 4:  # filter: 100, mask = 000 or 100
-                    hvs = [
-                        self.mask,      # self.mask = m00
-                        self.mask + 1,  # m01
-                        self.mask + 2,  # m10
-                        self.mask + 3   # m11
-                    ]
-            return hvs
-        else:
-            raise('error in VKlause.hit_value_nov3 - 1')
-
     def set_filter_and_mask(self):
         ''' For the example klause {7:1, 5:0, 2:1}
                               BITS:   7  6  5  4  3  2  1  0
@@ -154,7 +106,7 @@ def hit_values():
     hits = vk.hit_valuelist()
 
 
-def test_hit_values_nov3():
+def test_hit_valuelist():
     dics = [
         {2: 0, 1: 0, 0: 0},  # hvs: [0]
         {2: 1, 1: 0, 0: 0},  # hvs: [4]
@@ -173,13 +125,14 @@ def test_hit_values_nov3():
     ]
     for dic in dics:
         vk = VKlause('test-vk', dic, 3)
-        hvs = vk.hit_values_nov3()
+        hvs = vk.hit_valuelist()
         dic_str = str(dic)
         hvs_str = str(hvs)
         print(f'dic: {dic_str}: {hvs_str}')
         x = 1
+# ------- end of def test_hit_valuelist():
 
 
 if __name__ == '__main__':
-    # test_hit_values_nov3()
+    # test_hit_valuelist()
     hit_values()

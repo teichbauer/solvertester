@@ -39,7 +39,7 @@ def finish_nov3(bitdic):
             if vk.nob == 0:
                 bitdic.done = True
                 return []
-            unhits = unhits - set(vk.hit_values_nov3())
+            unhits = unhits - set(vk.hit_valuelist())
         sats = list(unhits)
         bitdic.done = True
     return sats

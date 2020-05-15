@@ -1,3 +1,5 @@
+0.4.27-20200515
+- got rid of hit_value_nov3 - it is replaced by hit_vluelist(self)
 0.4.26-20200515
 - bitdict.py now can find all sats, when solver4.py set single = False
   fix in basics.py/finish_nov3 always set bitdic.done = True.
