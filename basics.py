@@ -41,6 +41,7 @@ def finish_nov3(bitdic):
                 return []
             unhits = unhits - set(vk.hit_values_nov3())
         sats = list(unhits)
+        bitdic.done = True
     return sats
 
 
@@ -110,7 +111,6 @@ def test4_finish(node):
     perf_count["test4_finish"] += 1
     sats = []
     sats = get_sats(node, check_finish(node))
-    # sats = None
     if not node.done and node.nov == 1:
         if len(node.dic[0][0]) == 0:
             sats = get_sats(node, [0])

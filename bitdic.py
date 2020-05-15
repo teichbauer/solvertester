@@ -106,8 +106,26 @@ class BitDic:
             else:
                 N1 = 2 ** tb
                 vs = [v for v in range(N1)]
-            perf_count['SATS'] = get_sats(self, vs)
-            return len(perf_count['SATS']), None
+            sats = get_sats(self, vs)
+            perf_count['SATS'] += sats
+            bitdic0 = None
+            # return len(perf_count['SATS']), None
+        else:
+            bitdic0 = BitDic(
+                self.seed_name,
+                self.name + f"-{tb}'0",
+                vkdic0,
+                tb)
+
+            # from self to bitdic0: bit<tb> with value 0 droped
+            # when converting back, a 0 should be added on tb-bit
+            bitdic0.conversion = f"{tb}'0"
+            bitdic0.parent = self
+
+            sats = test4_finish(bitdic0)
+            if len(sats) > 0:
+                perf_count['SATS'] += sats
+                # return len(sats), None
 
         if len(vkdic1) == 0:
             N1 = 2 ** tb
@@ -115,35 +133,14 @@ class BitDic:
                 vs = [N1]
             else:
                 vs = [N1 + v for v in range(N1)]
-            perf_count['SATS'] = get_sats(self, vs)
-            return len(perf_count['SATS']), None
-
-        bitdic0 = BitDic(
-            self.seed_name,
-            self.name + f"-{tb}'0",
-            vkdic0,
-            tb)
-
-        # from self to bitdic0: bit<tb> with value 0 droped
-        # when converting back, a 0 should be added on tb-bit
-        bitdic0.conversion = f"{tb}'0"
-        bitdic0.parent = self
-
-        sats = test4_finish(bitdic0)
-        if sats != None and len(sats) > 0:
-            perf_count['SATS'] = sats
-            return len(sats), None
-
-        bdic = self.dic.copy()  # clone the bit-dic from self
-        bdic.pop(tb)            # drop the top bit in bdic
-
-        seed, top_bit = self.set_txseed(vkdic1, bdic)
-        if seed == None:
-            # with vkdic empty, there is only 1 line of value,
-            # the search of v is just one single line, starting with 0.
-            # so v = 0
-            return get_sats(self, [0]), None
+            perf_count['SATS'] += get_sats(self, vs)
+            bitdic1 = None
+            # return len(perf_count['SATS']), None
         else:
+            bdic = self.dic.copy()  # clone the bit-dic from self
+            bdic.pop(tb)            # drop the top bit in bdic
+
+            seed, top_bit = self.set_txseed(vkdic1, bdic)
             bitdic_tmp = BitDic(
                 f'~{self.seed_name}',
                 self.name + f"-{tb}'1",
@@ -160,19 +157,19 @@ class BitDic:
                 bitdic_tmp.visualize()
 
             sats = test4_finish(bitdic_tmp)
-            if sats != None and len(sats) > 0:
-                perf_count['SATS'] = sats
-                return len(sats), None
-
-            if not bitdic_tmp.done:
-                vk = vkdic1[seed]
-                tx = TransKlauseEngine(seed, top_bit, vk, tb)
-                # bitdic1 be tx-ed on 1 of its shortkns
-                bitdic1 = tx.trans_bitdic(bitdic_tmp)
-                # print(f'for bitdic1t Tx-seed:{seed}')
-            else:
+            if len(sats) > 0:
+                perf_count['SATS'] += sats
                 bitdic1 = bitdic_tmp
-            return bitdic0, bitdic1
+                # return len(sats), None
+            else:
+                if not bitdic_tmp.done:
+                    vk = vkdic1[seed]
+                    tx = TransKlauseEngine(seed, top_bit, vk, tb)
+                    # bitdic1 be tx-ed on 1 of its shortkns
+                    bitdic1 = tx.trans_bitdic(bitdic_tmp)
+                else:
+                    bitdic1 = bitdic_tmp
+        return bitdic0, bitdic1
     # ==== end of def split_topbit(self, single, debug)
 
     def most_popular(self, d):

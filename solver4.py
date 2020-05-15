@@ -6,7 +6,7 @@ import sys
 import time
 
 
-def initial_bitdic(conf_filename, seed='C001'):
+def initial_bitdic(conf_filename, seed='R'):
     sdic = get_sdic(conf_filename)
     vkdic = make_vkdic(sdic['kdic'], sdic['nov'])
     bitdic = BitDic(seed, seed, vkdic, sdic['nov'])
@@ -43,35 +43,38 @@ def search_sat(root, single, msg, debug):
             if msg:
                 print(f'split {node.name}')
             node0, node1 = node.split_topbit(single, debug)
-            # in split_topbit, the two children are tested to see
-            # if 1 of them has sat. If yes, return will be
-            # <sat>, None
-            if type(node0) == type(1):  # see if it is sat(integer)
-                # print(f'{node0} SATs found ')    # SAT!
-                return node0
-            else:
-                if node0.done:
-                    if msg:
+            if node0 == None or node0.done:
+                if msg:
+                    if node0 == None:
+                        bstr = str(node.nov - 1)
+                        name = f"{node.name}-{bstr}'0"
+                        print(f'{name} is done')
+                    else:
                         print(f'{node0.name} is done.')
-                else:
-                    nodes.append(node0)
-                if node1.done:
-                    if msg:
+            else:
+                nodes.append(node0)
+            if node1 == None or node1.done:
+                if msg:
+                    if node1 == None:
+                        bstr = str(node.nov - 1)
+                        name = f"{node.name}-{bstr}'1"
+                        print(f'{name} is done')
+                    else:
                         print(f'{node1.name} is done.')
-                else:
-                    nodes.append(node1)
+            else:
+                nodes.append(node1)
 
 
 if __name__ == '__main__':
     pp = pprint.PrettyPrinter(indent=4)
     msg = len(sys.argv) == 3
     debug = len(sys.argv) == 4
-    single = True
-    # single = False
+    # single = True
+    single = False
     if len(sys.argv) == 1:
-        # config_file_name = 'cfg6-13.json'
-        config_file_name = 'config20_80-9-0.json'
-        # config_file_name = 'config1.json'
+        # config_file_name = 'cfg26_100.json'
+        # config_file_name = 'config20_80-9-0.json'
+        config_file_name = 'config1.json'
     else:
         config_file_name = sys.argv[1]
     loop_tree('./configs/' + config_file_name, single, msg, debug)

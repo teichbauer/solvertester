@@ -1,3 +1,6 @@
+0.4.26-20200515
+- bitdict.py now can find all sats, when solver4.py set single = False
+  fix in basics.py/finish_nov3 always set bitdic.done = True.
 0.4.25-20200513
 - underways analyzing how to use solver4's method in solver5.
 0.4.24-20200513
