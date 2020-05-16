@@ -72,11 +72,12 @@ if __name__ == '__main__':
     # single = True
     single = False
     if len(sys.argv) == 1:
-        # config_file_name = 'cfg26_100.json'
+        config_file_name = 'cfg40-172.json'
         # config_file_name = 'config20_80-9-0.json'
-        config_file_name = 'config1.json'
+        # config_file_name = 'config1.json'
     else:
         config_file_name = sys.argv[1]
     loop_tree('./configs/' + config_file_name, single, msg, debug)
-    print('perf-count: ')
+    nos = len(perf_count['SATS'])
+    print(f'perf-count({nos}): ')
     pp.pprint(perf_count)

@@ -54,6 +54,9 @@ class TransKlauseEngine:
         bits = self.start_vklause.bits[:]
         allbits = [b for b in range(self.nov)]  # nov X target-bits
         if len(bits) == 0:
+            self.vklause = VKlause(self.kname, {}, self.nov)
+            msg = str(self.start_vklause.dic) + 'nov:' + str(self.nov)
+            print(f'@@ base_vklause @@  - {msg}')
             return
 
         # target/left-most bits(names)

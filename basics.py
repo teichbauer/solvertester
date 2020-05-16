@@ -31,6 +31,7 @@ def finish_nov3(bitdic):
         check if the vklauses in bitdic.vkdic cover all of them
         '''
     sats = []
+    bitdic.done = True
     if bitdic.nov == 3:
         unhits = bitdic.check8set.copy()
         for kn, vk in bitdic.vkdic.items():
@@ -41,7 +42,6 @@ def finish_nov3(bitdic):
                 return []
             unhits = unhits - set(vk.hit_valuelist())
         sats = list(unhits)
-        bitdic.done = True
     return sats
 
 

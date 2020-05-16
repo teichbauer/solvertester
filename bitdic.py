@@ -71,6 +71,8 @@ class BitDic:
             else, return bitdic0, bitdic1
             '''
         perf_count["split_topbit"] += 1
+        if self.nov < 3:
+            debug0 = 1
         tb = self.nov - 1   # top bit number
         vkdic0 = {}     # vks with top-bit == 0
         vkdic1 = {}     # vks with top-bit == 1

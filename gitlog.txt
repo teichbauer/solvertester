@@ -1,3 +1,12 @@
+0.4.28-20200515
+- some fixes in basics.py, some ebug-marks - still some puzzle in Tx:58
+  where @@ base_vklause @@  - {}nov:4 printed out see 
+  cfg-json-sat-usat.txt => .\solver4.py cfg60-258.json
+- generates some cfg files for testing:
+  cfg60-250.json(9.5sec), cfg100-420.json(>10k sats) 384secs 
+  cfg100-450.json:64 sats, time used:520 secs
+  see cfg-json-sat-usat.txt
+- TBD: iterative cut nov algo
 0.4.27-20200515
 - got rid of hit_value_nov3 - it is replaced by hit_vluelist(self)
 0.4.26-20200515
