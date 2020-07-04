@@ -1,0 +1,195 @@
+1 Introduction of 3SAT as a NP complete problem
+---------------------------------------------------
+SATISFIABILITY or SAT problem.
+
+Suppose X0, X1, X2, ..., Xn are n+1 variables, boolean vaiables. 
+That is, Xi can take value True or False (1, or 0)
+There exist boolean operators:
+    AND, OR, NOT
+    
+A example boolena function F:
+
+   F = f(X0,...Xn)
+     = X0 AND NOT(X1 OR X2) OR (...)...
+     
+To find out a set of values 0s and 1s taken by all n+1 variables, so that
+F turns out to be True, in a simple way, one can just test input all possible
+combinstions of values for X0..Xn, test each combination, to see if F results
+to True or False.
+
+that will have 2**(n+1) combinations. For n variables, there will be 2**n
+for the search space. For finding out, if F has a positive (F = True) solution,
+there will be 2**n steps to go
+
+That is why, SAT problem is of complixity O(2**n) - that is, exponential.
+
+[ EXCURSION / side story
+    In complexity theory, O(2**n) means that that increase of steps 
+    calculation, is exponential. That is, if n increased by 1, the step-count 
+    will double of n-1's step-count
+
+    Compare to polynomial O(n**k): when n increases by 1, say from 23 to 24, 
+    the step-count will increase from 23**k to 24**k. The speed of step-count 
+    increase for polynormial or exponential are of huge difference.
+]
+
+And people have proof that SAT is NP-complete, meaning, all NP-complete 
+problems, can be "reduced" / converted to another NP-complete problems. AND
+the conversion process has the polynormial complexity -  O(n**k). 
+And polynormial complexity, is categorically easier to calculate, of faster, 
+or practical, to solve.
+
+3SAT - a standard form of SAT. Let's say K is a clause (sub-boolean function)
+
+    F = K1 AND K2 AND K3 AND ... AND Km                        (1-1)
+    
+where each clause K can only have 3 literals (Xi, or NOT Xi) with OR between 
+them
+  
+    K1 = X1 OR (NOT X2) OR X3
+    
+It has been proven, that any SAT problem/function, can be convered to a 3SAT
+problem.
+
+The big question, that has puzzled mankind since 1950s, is:
+if it is possible to solve a NP-complete problem, with polynormial 
+complexity(P) That is the famous
+
+    NP = P ?
+
+
+So, if someone finds a fast way, a P-way (polynormial complexity) for a 
+solution for a 3SAT, he/she has found a fast/P way of solving all NP-complete
+problems - proving that
+
+    NP = P 
+    
+
+2 Analyzing 3SAT
+----------------------------
+Since each variable takes only 2 possible values: 0 or 1, the whole line-up of
+Xn-1,Xn-2,...X2, X1, X0, can be seen as (example here n=8)
+
+  value v = 2**n 
+  
+ v    7  6  5  4  3  2  1  0  ( representing (X7, X6, X5, X4, X3, X2, X1, X0)
+ ----------------------------
+ 000: 0  0  0  0  0  0  0  0 
+ 001: 0  0  0  0  0  0  0  1 
+ 002: 0  0  0  0  0  0  1  0 
+ 003: 0  0  0  0  0  0  1  1 
+ 004: 0  0  0  0  0  1  0  0 
+ 005: 0  0  0  0  0  1  0  1 
+ 006: 0  0  0  0  0  1  1  0 
+ 007: 0  0  0  0  0  1  1  1 
+ 008: 0  0  0  0  1  0  0  0 
+ 009: 0  0  0  0  1  0  0  1 
+ 010: 0  0  0  0  1  0  1  0 
+ 011: 0  0  0  0  1  0  1  1 
+ 012: 0  0  0  0  1  1  0  0 
+ 013: 0  0  0  0  1  1  0  1 
+ 014: 0  0  0  0  1  1  1  0 
+ ...
+ 255: 1  1  1  1  1  1  1  1
+ 
+The task is, to find a v=Vx, so that F(X7,X6,X5,X4,X3,X2,X1,X0) =>1
+
+Let's formulate a clause 
+
+    K = X7 OR (NOT X6) OR X3  => {7:0,  6: 1,  3: 0}
+    
+This means, if bit-7 is 1, OR bit-6 is 0, OR bit-3 is 1, K will be True.
+or, otherwise, if bit-7 is 0, AND bit-6 is 1 AND bit-3 is 0, K will be False.
+That is, for value v = 65 and 66, 67
+
+ v    7  6  5  4  3  2  1  0 
+ ----------------------------
+ 065: 0  1  0  0  0  0  0  1
+ 066: 0  1  0  0  0  0  1  0
+ 066: 0  1  0  0  0  0  1  1
+ 
+The Function
+
+    F = K 
+
+will turn to False.
+Looking at (1-1), we can see, if any K in K1..Km, turns to false, 
+F will be false. So if Ki = False, other Kx (x!=i) can be omitted - we know
+F is false already.
+In this example, if C = {7:0,  6: 1,  3: 0}, we can mark in the values space,
+for the values of 65, 66, 67 with C - meaning these values are blocked/hit by
+C.
+
+ v    7  6  5  4  3  2  1  0 
+ ----------------------------
+ 065: 0  1  0  0  0  0  0  1  $  C
+ 066: 0  1  0  0  0  0  1  0  $  C
+ 066: 0  1  0  0  0  0  1  1  $  C
+ 
+Now, let us have 13 clauses expressed this way:
+
+C001:{7: 0, 6: 0, 5: 0}
+C002:{3: 0, 2: 1, 1: 0}
+C003:{7: 0, 6: 0, 4: 1}
+C004:{7: 1, 6: 0, 3: 1}
+C005:{7: 0, 4: 0, 2: 0}
+C006:{6: 0, 1: 1, 0: 1}
+C007:{4: 1, 2: 0, 0: 0}
+C008:{7: 0, 6: 0, 5: 1}
+C009:{3: 1, 2: 1, 1: 0}
+C010:{3: 1, 2: 0, 0: 1}
+C011:{4: 0, 2: 1, 1: 1}
+C012:{4: 1, 2: 0, 1: 0}
+C013:{3: 1, 2: 1, 1: 1}
+
+We then can have the following marked value-table:
+
+      07 06 05 04 03 02 01  0
+---------------------------------------------------------------------
+00000: 0  0  0  0  0  0  0  0 $ C001 C005
+00001: 0  0  0  0  0  0  0  1 $ C001 C005
+00002: 0  0  0  0  0  0  1  0 $ C001 C005
+00003: 0  0  0  0  0  0  1  1 $ C001 C005 C006
+00004: 0  0  0  0  0  1  0  0 $ C001 C002
+00005: 0  0  0  0  0  1  0  1 $ C001 C002
+00006: 0  0  0  0  0  1  1  0 $ C001 C011
+00007: 0  0  0  0  0  1  1  1 $ C001 C006 C011
+00008: 0  0  0  0  1  0  0  0 $ C001 C005
+00009: 0  0  0  0  1  0  0  1 $ C001 C005 C010
+00010: 0  0  0  0  1  0  1  0 $ C001 C005
+00011: 0  0  0  0  1  0  1  1 $ C001 C005 C006 C010
+00012: 0  0  0  0  1  1  0  0 $ C001 C009
+00013: 0  0  0  0  1  1  0  1 $ C001 C009
+00014: 0  0  0  0  1  1  1  0 $ C001 C011 C013
+00015: 0  0  0  0  1  1  1  1 $ C001 C006 C011 C013
+00016: 0  0  0  1  0  0  0  0 $ C001 C003 C007 C012
+...
+00243: 1  1  1  1  0  0  1  1 $ 
+00244: 1  1  1  1  0  1  0  0 $ C002
+00245: 1  1  1  1  0  1  0  1 $ C002
+00246: 1  1  1  1  0  1  1  0 $ 
+00247: 1  1  1  1  0  1  1  1 $ 
+00248: 1  1  1  1  1  0  0  0 $ C007 C012
+00249: 1  1  1  1  1  0  0  1 $ C010 C012
+00250: 1  1  1  1  1  0  1  0 $ C007
+00251: 1  1  1  1  1  0  1  1 $ C010
+00252: 1  1  1  1  1  1  0  0 $ C009
+00253: 1  1  1  1  1  1  0  1 $ C009
+00254: 1  1  1  1  1  1  1  0 $ C013
+00255: 1  1  1  1  1  1  1  1 $ C013
+
+We can see here, value 243, 246, 247 are hit by non of the 13 clauses.
+These are the solutions that make 
+
+    F = C1 AND C2 AND C3 AND ... AND C13
+    
+to be True.
+
+The general thought is here: if we can have a quick way, to remove all the
+blocks of value-space, that are hit by any of the 13 clauses, then the "clean"
+values left, ARE that SAT values.
+And if these actions can take polynormial time - that is the question.
+
+
+
+

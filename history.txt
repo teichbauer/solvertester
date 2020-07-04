@@ -1,0 +1,33 @@
+solver0
+-------------------
+Can be found under np/solvertest/
+
+brute force way: given a config.json, calculate sats/unsats, by evaluate
+every value of 2**n: loop thru every klause:
+    python solver0.py config1.json
+This will take ./configs/config1.json file as input, and print out.
+By adding a cmd line param (any name):
+    python solver0.py config1.json out
+Will generate a output file named config1.txt under verify. This is for visual
+check and analysis
+
+solver1
+-----------------------------------------
+
+
+solver2
+-----------------------------------------
+
+
+solver3
+-----------------------------------------
+
+solver4
+-----------------------------------------
+
+solver
+-----------------------------------------
+
+solver6
+-----------------------------------------
+

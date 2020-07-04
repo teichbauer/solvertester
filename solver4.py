@@ -79,5 +79,5 @@ if __name__ == '__main__':
         config_file_name = sys.argv[1]
     loop_tree('./configs/' + config_file_name, single, msg, debug)
     nos = len(perf_count['SATS'])
-    print(f'perf-count({nos}): ')
     pp.pprint(perf_count)
+    print(f'number of sats: {nos} ')

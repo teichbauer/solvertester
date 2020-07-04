@@ -3,7 +3,6 @@ from vklause import VKlause
 perf_count = {
     "SATS": [],
     "BitDic-init": 0,
-    "TxTopKn": 0,
     "add_vklause": 0,
     "set_txseed": 0,
     "test4_finish": 0,
